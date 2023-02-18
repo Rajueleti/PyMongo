@@ -1,0 +1,21 @@
+Flask API with MongoDB
+This is a simple Flask API that allows you to perform CRUD operations (create, read, update, delete) on a MongoDB database. It is set up to work with a collection called "Hulu" in a MongoDB Atlas cluster.
+Installation
+1. Clone this repository to your local machine.
+2. Install the required packages listed in requirements.txt using pip.
+Configuration
+1. In PyMongo.py, modify the MongoClient constructor to connect to your own MongoDB cluster. You can obtain the connection string from the Atlas dashboard.
+2. In PyMongo.py, change the db variable to the name of the database you want to use.
+
+Usage
+1. Run the Flask app by executing python PyMongoDB.py.
+2. To add a new movie or show to the database, make a POST request to http://localhost:8080/api with a JSON body containing the data.
+3. To update the information of an existing movie or show, make a PATCH request to http://localhost:8080/api/<title> with a JSON body containing the updated data.
+4. To delete a movie or show from the database, make a DELETE request to http://localhost:8080/api/<title>.
+5. To retrieve all the movies and shows in the database, make a GET request to http://localhost:8080/api.
+6. To retrieve the details of a specific movie or show, make a GET request to http://localhost:8080/api/<title>.
+
+Requirements
+See requirements.txt for a list of required packages.
+Note: The pymongo package is required to connect to MongoDB. You will also need to have a MongoDB Atlas account and a database set up to use this API.
+
