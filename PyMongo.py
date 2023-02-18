@@ -1,13 +1,18 @@
+import os
 from pymongo import MongoClient
 from flask import Flask, request, jsonify
-import ssl
-
-
 
 app = Flask(__name__)
 
-client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
-db = client["db"]
+MONGO_URI = os.environ.get('MONGODB_URI')
+client = MongoClient(MONGO_URI)
+db = client.get_default_database()
+
+# rest of the code here
+
+
+#client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
+#db = client["db"]
 
 
 #Insert the new movie and show. 
