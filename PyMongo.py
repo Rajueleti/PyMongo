@@ -84,6 +84,7 @@ def search():
         query = request.form['query']
         movies = db.Hulu.find({'title': {'$regex': query, '$options': 'i'}})
         return render_template('index.html', movies=movies)
+        print (movies)
     else:
         return render_template('index.html')
 
