@@ -39,17 +39,19 @@ def api_delete(fname):
         return str(e)
 
 
-# Retrieve all the movies and shows in database.
+#Retrieve all the movies and shows in database
 @app.route('/api', methods=['GET'])
 def api_get():
     try:
         data = db.Hulu.find()
         json_data=[]
         for x in data:
+            x['_id'] = str(x['_id'])  # Convert ObjectId to string
             json_data.append(x)
-        return jsonify(json_data)
+        return jsonify(json_data)  # Return data as JSON
     except Exception as e:
         return str(e)
+
 
 
 # Display the movie and show’s detail using title.
