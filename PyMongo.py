@@ -1,16 +1,13 @@
 from pymongo import MongoClient
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import ssl
-
-
 
 app = Flask(__name__)
 
 client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
 db = client["db"]
 
-
-#Insert the new movie and show. 
+# Insert the new movie and show. 
 @app.route('/api', methods=['POST'])
 def api():
     try:
@@ -20,8 +17,7 @@ def api():
     except Exception as e:
         return str(e)
 
-
-#Update the movie and show information using title. 
+# Update the movie and show information using title. 
 @app.route('/api/<string:fname>', methods=['PATCH'])
 def api_update(fname):
     try:
@@ -31,8 +27,7 @@ def api_update(fname):
     except Exception as e:
         return str(e)
 
-
-#Delete the movie and show information using title.
+# Delete the movie and show information using title.
 @app.route('/api/<string:fname>', methods=['DELETE'])
 def api_delete(fname):
     try:
@@ -41,8 +36,7 @@ def api_delete(fname):
     except Exception as e:
         return str(e)
 
-
-#Retrieve all the movies and shows in database
+# Retrieve all the movies and shows in database
 @app.route('/api', methods=['GET'])
 def api_get():
     try:
@@ -54,8 +48,7 @@ def api_get():
     except Exception as e:
         return str(e)
 
-
-#Display the movie and show’s detail using title.
+# Display the movie and show’s detail using title.
 @app.route('/api/<string:fname>', methods=['GET'])
 def api_get_one(fname):
     try:
@@ -64,6 +57,14 @@ def api_get_one(fname):
     except Exception as e:
         return str(e)
 
+# Display all the movies and shows in a table
+@app.route('/table', methods=['GET'])
+def display_table():
+    try:
+        data = db.Hulu.find()
+        return render_template('table.html', data=data)
+    except Exception as e:
+        return str(e)
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)
