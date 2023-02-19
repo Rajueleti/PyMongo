@@ -44,7 +44,7 @@ def api_get():
         json_data=[]
         for x in data:
             json_data.append(x)
-        return str(json_data)
+        return render_template('index.html', data=json_data)
     except Exception as e:
         return str(e)
 
@@ -57,12 +57,16 @@ def api_get_one(fname):
     except Exception as e:
         return str(e)
 
-# Display all the movies and shows in a table
-@app.route('/table', methods=['GET'])
-def display_table():
+# Search for a movie by its title
+@app.route('/search', methods=['POST'])
+def search():
     try:
-        data = db.Hulu.find()
-        return render_template('table.html', data=data)
+        query = request.form['query']
+        data = db.Hulu.find({"title": {"$regex": query, "$options": "i"}})
+        json_data=[]
+        for x in data:
+            json_data.append(x)
+        return render_template('index.html', data=json_data)
     except Exception as e:
         return str(e)
 
