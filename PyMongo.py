@@ -1,13 +1,13 @@
 from pymongo import MongoClient
 from flask import Flask, request, jsonify, render_template
-import ssl
 
 app = Flask(__name__)
 
 client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
 db = client["db"]
 
-# Insert the new movie and show. 
+
+# Insert the new movie and show.
 @app.route('/api', methods=['POST'])
 def api():
     try:
@@ -17,7 +17,8 @@ def api():
     except Exception as e:
         return str(e)
 
-# Update the movie and show information using title. 
+
+# Update the movie and show information using title.
 @app.route('/api/<string:fname>', methods=['PATCH'])
 def api_update(fname):
     try:
@@ -26,6 +27,7 @@ def api_update(fname):
         return "OK"
     except Exception as e:
         return str(e)
+
 
 # Delete the movie and show information using title.
 @app.route('/api/<string:fname>', methods=['DELETE'])
@@ -36,7 +38,8 @@ def api_delete(fname):
     except Exception as e:
         return str(e)
 
-#Retrieve all the movies and shows in database
+
+# Retrieve all the movies and shows in database.
 @app.route('/api', methods=['GET'])
 def api_get():
     try:
@@ -44,7 +47,7 @@ def api_get():
         json_data=[]
         for x in data:
             json_data.append(x)
-        return jsonify(json_data)  # Return data as JSON
+        return jsonify(json_data)
     except Exception as e:
         return str(e)
 
@@ -58,17 +61,19 @@ def api_get_one(fname):
     except Exception as e:
         return str(e)
 
-@app.route('/search_movie', methods=['POST'])
-def search_movie():
-    try:
-        title = request.form['movie_title']
-        data = db.Hulu.find({"title": {"$regex": title, "$options": "i"}})
-        movies = []
-        for x in data:
-            movies.append(x)
-        return render_template('index.html', movies=movies)
-    except Exception as e:
-        return str(e)
+
+# Display all the movies and shows in database with a search bar for title.
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        search_query = request.form['search_query']
+        if search_query:
+            search_results = db.Hulu.find({"title": {'$regex': search_query, '$options': 'i'}})
+        else:
+            search_results = db.Hulu.find()
+    else:
+        search_results = db.Hulu.find()
+    return render_template('index.html', results=search_results)
 
 
 if __name__ == '__main__':
