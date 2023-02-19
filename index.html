@@ -2,40 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Movies</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Hulu Movies</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1 class="text-center">Hulu Movies</h1>
-        <form class="form-inline my-2 my-lg-0 justify-content-center" action="{{ url_for('search_movie') }}" method="POST">
-            <input class="form-control mr-sm-2" type="search" name="movie_title" placeholder="Search by movie title" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <h1>Hulu Movies</h1>
+        <form method="post" action="{{ url_for('search') }}">
+            <div class="form-group">
+                <input type="text" name="query" class="form-control" placeholder="Search movies by title">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
         </form>
         <table class="table">
             <thead>
                 <tr>
                     <th>Title</th>
+                    <th>Year</th>
                     <th>Genre</th>
-                    <th>Language</th>
-                    <th>Release Date</th>
+                    <th>IMDb Rating</th>
                 </tr>
             </thead>
             <tbody>
                 {% for movie in movies %}
-                <tr>
-                    <td>{{ movie.title }}</td>
-                    <td>{{ movie.genre }}</td>
-                    <td>{{ movie.language }}</td>
-                    <td>{{ movie.release_date }}</td>
-                </tr>
+                    <tr>
+                        <td>{{ movie.Title }}</td>
+                        <td>{{ movie.Year }}</td>
+                        <td>{{ movie.Genre }}</td>
+                        <td>{{ movie.IMDbRating }}</td>
+                    </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>
-
