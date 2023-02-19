@@ -11,7 +11,7 @@ db = client["db"]
 
 
 #Insert the new movie and show. 
-@app.route('/api', methods=['POST'])
+@app.route('/home/', methods=['POST'])
 def api():
     try:
         data = request.get_json()
@@ -22,7 +22,7 @@ def api():
 
 
 #Update the movie and show information using title. 
-@app.route('/api/<string:fname>', methods=['PATCH'])
+@app.route('/home/<string:fname>', methods=['PATCH'])
 def api_update(fname):
     try:
         data = request.get_json()
@@ -33,7 +33,7 @@ def api_update(fname):
 
 
 #Delete the movie and show information using title.
-@app.route('/api/<string:fname>', methods=['DELETE'])
+@app.route('/home/<string:fname>', methods=['DELETE'])
 def api_delete(fname):
     try:
         db.Hulu.delete_one({"title": fname})
@@ -43,7 +43,7 @@ def api_delete(fname):
 
 
 #Retrieve all the movies and shows in database
-@app.route('/api', methods=['GET'])
+@app.route('/home', methods=['GET'])
 def api_get():
     try:
         data = db.Hulu.find()
@@ -56,7 +56,7 @@ def api_get():
 
 
 #Display the movie and show’s detail using title.
-@app.route('/api/<string:fname>', methods=['GET'])
+@app.route('/home/<string:fname>', methods=['GET'])
 def api_get_one(fname):
     try:
         data = db.Hulu.find_one({"title": fname})
