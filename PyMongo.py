@@ -1,18 +1,13 @@
-import os
 from pymongo import MongoClient
 from flask import Flask, request, jsonify
+import ssl
+
+
 
 app = Flask(__name__)
 
-MONGO_URI = os.environ.get('MONGODB_URI')
-client = MongoClient(MONGO_URI)
-db = client.get_default_database()
-
-# rest of the code here
-
-
-#client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
-#db = client["db"]
+client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority")
+db = client["db"]
 
 
 #Insert the new movie and show. 
@@ -71,5 +66,4 @@ def api_get_one(fname):
 
 
 if __name__ == '__main__':
-    app.run(port=int(os.environ.get('PORT', 8080)), debug=True)
-
+    app.run(port=8080, debug=True)
