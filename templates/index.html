@@ -18,7 +18,7 @@
             <thead>
                 <tr>
                     <th>Title</th>
-                    <th>Year</th>
+                    <th>Id</th>
                     <th>Genre</th>
                     <th>IMDb Rating</th>
                 </tr>
@@ -27,7 +27,7 @@
                 {% for movie in movies %}
                     <tr>
                         <td>{{ movie.title }}</td>
-                        <td>{{ movie.year }}</td>
+                        <td>{{ movie.id }}</td>
                         <td>{{ movie.genres }}</td>
                         <td>{{ movie.score }}</td>
                     </tr>
