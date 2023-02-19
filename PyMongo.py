@@ -57,18 +57,18 @@ def api_get_one(fname):
     except Exception as e:
         return str(e)
 
-# Search for a movie by its title
-@app.route('/search', methods=['POST'])
-def search():
+@app.route('/search_movie', methods=['POST'])
+def search_movie():
     try:
-        query = request.form['query']
-        data = db.Hulu.find({"title": {"$regex": query, "$options": "i"}})
-        json_data=[]
+        title = request.form['movie_title']
+        data = db.Hulu.find({"title": {"$regex": title, "$options": "i"}})
+        movies = []
         for x in data:
-            json_data.append(x)
-        return render_template('index.html', data=json_data)
+            movies.append(x)
+        return render_template('index.html', movies=movies)
     except Exception as e:
         return str(e)
+
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)
