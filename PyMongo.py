@@ -36,7 +36,7 @@ def api_delete(fname):
     except Exception as e:
         return str(e)
 
-# Retrieve all the movies and shows in database
+#Retrieve all the movies and shows in database
 @app.route('/api', methods=['GET'])
 def api_get():
     try:
@@ -44,9 +44,10 @@ def api_get():
         json_data=[]
         for x in data:
             json_data.append(x)
-        return render_template('index.html', data=json_data)
+        return jsonify(json_data)  # Return data as JSON
     except Exception as e:
         return str(e)
+
 
 # Display the movie and show’s detail using title.
 @app.route('/api/<string:fname>', methods=['GET'])
