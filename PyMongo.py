@@ -82,7 +82,7 @@ def api_get():
 def search():
     if request.method == 'POST':
         query = request.form['query']
-        movies = db.Hulu.find({'Title': {'$regex': query, '$options': 'i'}})
+        movies = db.Hulu.find({'title': {'$regex': query, '$options': 'i'}})
         return render_template('index.html', movies=movies)
     else:
         return render_template('index.html')
