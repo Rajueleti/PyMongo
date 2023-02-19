@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Movie and Show Table</title>
+	<style>
+		table, th, td {
+		  border: 1px solid black;
+		  border-collapse: collapse;
+		}
+		th, td {
+		  padding: 5px;
+		  text-align: left;    
+		}
+	</style>
+</head>
+<body>
+	<table>
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Genre</th>
+				<th>Rating</th>
+				<th>Director</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for item in data %}
+			<tr>
+				<td>{{ item.title }}</td>
+				<td>{{ item.description }}</td>
+				<td>{{
