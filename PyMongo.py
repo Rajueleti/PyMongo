@@ -40,7 +40,7 @@ def api_delete(fname):
 
 
 #Retrieve all the movies and shows in database
-@app.route('/api', methods=['GET'])
+'''@app.route('/api', methods=['GET'])
 def api_get():
     try:
         data = db.Hulu.find()
@@ -50,7 +50,7 @@ def api_get():
             json_data.append(x)
         return jsonify(json_data)  # Return data as JSON
     except Exception as e:
-        return str(e)
+        return str(e)'''
 
 
 
@@ -64,18 +64,33 @@ def api_get_one(fname):
         return str(e)
 
 
-# Display all the movies and shows in database with a search bar for title.
-@app.route('/', methods=['GET', 'POST'])
-def index():
+# Retrieve all the movies and shows in the database
+@app.route('/api', methods=['GET'])
+def api_get():
+    try:
+        data = db.Hulu.find()
+        json_data = []
+        for x in data:
+            x['_id'] = str(x['_id'])
+            json_data.append(x)
+        return jsonify(json_data)  # Return data as JSON
+    except Exception as e:
+        return str(e)
+
+# Search for movies by title
+@app.route('/search', methods=['GET', 'POST'])
+def search():
     if request.method == 'POST':
-        search_query = request.form['search_query']
-        if search_query:
-            search_results = db.Hulu.find({"title": {'$regex': search_query, '$options': 'i'}})
-        else:
-            search_results = db.Hulu.find()
+        query = request.form['query']
+        movies = db.Hulu.find({'Title': {'$regex': query, '$options': 'i'}})
+        return render_template('index.html', movies=movies)
     else:
-        search_results = db.Hulu.find()
-    return render_template('index.html', results=search_results)
+        return render_template('index.html')
+
+# Render the HTML template
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 
 if __name__ == '__main__':
