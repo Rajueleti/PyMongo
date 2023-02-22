@@ -77,11 +77,12 @@ def api_get():
     except Exception as e:
         return str(e)
 
-@app.route('/count_duplicates')
-def count_duplicates():
-    # Group the collection by all fields
+# Count duplicate items with given title
+@app.route('/count_duplicates/<string:fname>', methods=['GET'])
+def count_duplicates(fname):
     pipeline = [
-        {'$group': {'_id': {k: '$' + k for k in collection.find_one()}, 'count': {'$sum': 1}}},
+        {'$match': {'title': fname}},  # Filter by title
+        {'$group': {'_id': '$title', 'count': {'$sum': 1}}},
         {'$match': {'count': {'$gt': 1}}}
     ]
     cursor = collection.aggregate(pipeline)
@@ -91,7 +92,7 @@ def count_duplicates():
     for doc in cursor:
         count += doc['count'] - 1
 
-    return f'Total number of duplicate documents: {count}'
+    return f'Total number of duplicate documents for title "{fname}": {count}'
     
     
     
