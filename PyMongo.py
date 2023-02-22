@@ -77,6 +77,24 @@ def api_get():
     except Exception as e:
         return str(e)
 
+@app.route('/count_duplicates')
+def count_duplicates():
+    # Group the collection by all fields
+    pipeline = [
+        {'$group': {'_id': {k: '$' + k for k in collection.find_one()}, 'count': {'$sum': 1}}},
+        {'$match': {'count': {'$gt': 1}}}
+    ]
+    cursor = collection.aggregate(pipeline)
+
+    # Get the count of duplicate documents
+    count = 0
+    for doc in cursor:
+        count += doc['count'] - 1
+
+    return f'Total number of duplicate documents: {count}'
+    
+    
+    
 # Search for movies by title
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -87,6 +105,9 @@ def search():
         print (movies)
     else:
         return render_template('index.html')
+    
+    
+    
 
 # Render the HTML template
 @app.route('/')
