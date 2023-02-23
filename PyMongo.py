@@ -5,6 +5,7 @@ app = Flask(__name__)
 
 client = MongoClient("mongodb+srv://RajuEleti:RajuEleti@cluster0.iz79rqq.mongodb.net/test?retryWrites=true&w=majority", tlsAllowInvalidCertificates=True)
 db = client["db"]
+collection = db["Hulu"]
 
 
 # Insert the new movie and show.
@@ -12,7 +13,7 @@ db = client["db"]
 def api():
     try:
         data = request.get_json()
-        db.Hulu.insert_one(data)
+        collection.insert_one(data)
         return "OK"
     except Exception as e:
         return str(e)
@@ -23,7 +24,7 @@ def api():
 def api_update(fname):
     try:
         data = request.get_json()
-        db.Hulu.update_one({"title": fname}, {"$set": data})
+        collection.update_one({"title": fname}, {"$set": data})
         return "OK"
     except Exception as e:
         return str(e)
@@ -33,37 +34,36 @@ def api_update(fname):
 @app.route('/api/<string:fname>', methods=['DELETE'])
 def api_delete(fname):
     try:
-        db.Hulu.delete_one({"title": fname})
+        collection.delete_one({"title": fname})
         return 'movie deleted'
     except Exception as e:
         return str(e)
 
 
-#Retrieve all the movies and shows in database
-'''@app.route('/api', methods=['GET'])
+# Retrieve all the movies and shows in database
+@app.route('/api', methods=['GET'])
 def api_get():
     try:
-        data = db.Hulu.find()
-        json_data=[]
+        data = collection.find()
+        json_data = []
         for x in data:
-            x['_id'] = str(x['_id'])  # Convert ObjectId to string
+            x['_id'] = str(x['_id'])
             json_data.append(x)
         return jsonify(json_data)  # Return data as JSON
     except Exception as e:
-        return str(e)'''
-
+        return str(e)
 
 
 # Display the movie and show’s detail using title.
 @app.route('/api/<string:fname>', methods=['GET'])
 def api_get_one(fname):
     try:
-        data = db.Hulu.find_one({"title": fname})
+        data = collection.find_one({"title": fname})
         return str(data)
     except Exception as e:
         return str(e)
 
-    
+
 # Count duplicate items with given title
 @app.route('/count_duplicates/<string:fname>', methods=['GET'])
 def count_duplicates(fname):
@@ -72,7 +72,7 @@ def count_duplicates(fname):
         {'$group': {'_id': '$title', 'count': {'$sum': 1}}},
         {'$match': {'count': {'$gt': 1}}}
     ]
-    cursor = db['Hulu'].aggregate(pipeline)
+    cursor = collection.aggregate(pipeline)
 
     # Get the count of duplicate documents
     count = 0
@@ -80,20 +80,7 @@ def count_duplicates(fname):
         count += doc['count'] - 1
 
     return f'Total number of duplicate documents for title "{fname}": {count}'
-    
 
-# Retrieve all the movies and shows in the database
-@app.route('/api', methods=['GET'])
-def api_get():
-    try:
-        data = db.Hulu.find()
-        json_data = []
-        for x in data:
-            x['_id'] = str(x['_id'])
-            json_data.append(x)
-        return jsonify(json_data)  # Return data as JSON
-    except Exception as e:
-        return str(e)
 
 # app route to search movies my genre.
 @app.route('/genre_search', methods=['GET', 'POST'])
@@ -112,8 +99,11 @@ def genre_search():
                 movies.append(doc['_id'])
         return render_template('genre_search.html', movies=movies, genre=genre)
     else:
-        return render_template('genre_search.html')    
-    
+        return render_template('genre_search.html')
+
+
+
+
     
 # Search for movies by title
 @app.route('/search', methods=['GET', 'POST'])
@@ -137,3 +127,4 @@ def index():
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)
+    
