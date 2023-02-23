@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Genre Search</title>
+	<title>Genre Search</title>
 </head>
 <body>
-    <form method="post">
-        <input type="text" name="genre" placeholder="Enter a genre">
-        <button type="submit">Search</button>
-        <button type="reset">Cancel</button>
-    </form>
-    {% if movies %}
-        <h2>{{ genre }} Movies ({{ movies|length }})</h2>
-        <ul>
-        {% for movie in movies %}
-            <li>{{ movie }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
+	<h1>Genre Search</h1>
+	<form method="POST" action="/genre_search">
+		<label for="genre">Enter a genre:</label>
+		<input type="text" id="genre" name="genre">
+		<button type="submit">Search</button>
+	</form>
+	<hr>
+	<h2>Results:</h2>
+	<ul id="results"></ul>
+	<script>
+		// Get the results from the server and display them on the page
+		function displayResults(results) {
+			var resultsList = document.getElementById("results");
+			resultsList.innerHTML = "";
+			results.forEach(function(result) {
+				var li = document.createElement("li");
+				li.textContent = result.title;
+				resultsList.appendChild(li);
+			});
+		}
+
+		// Send a POST request to the server when the form is submitted
+		var form = document.querySelector("form");
+		form.addEventListener("submit", function(event) {
+			event.preventDefault();
+			var formData = new FormData(form);
+			fetch("/genre_search", {
+				method: "POST",
+				body: formData
+			})
+			.then(function(response) {
+				return response.json();
+			})
+			.then(function(data) {
+				displayResults(data.results);
+			})
+			.catch(function(error) {
+				console.error(error);
+			});
+		});
+	</script>
 </body>
 </html>
+
