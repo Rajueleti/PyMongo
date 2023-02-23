@@ -95,8 +95,24 @@ def api_get():
     except Exception as e:
         return str(e)
 
-
-    
+# app route to search movies my genre.
+@app.route('/genre_search', methods=['GET', 'POST'])
+def genre_search():
+    if request.method == 'POST':
+        genre = request.form.get('genre')
+        pipeline = [
+            {'$match': {'genres': genre}},
+            {'$group': {'_id': '$title', 'count': {'$sum': 1}}},
+            {'$match': {'count': {'$gt': 1}}}
+        ]
+        cursor = collection.aggregate(pipeline)
+        movies = []
+        for doc in cursor:
+            if doc['count'] > 1:
+                movies.append(doc['_id'])
+        return render_template('genre_search.html', movies=movies, genre=genre)
+    else:
+        return render_template('genre_search.html')    
     
     
 # Search for movies by title
