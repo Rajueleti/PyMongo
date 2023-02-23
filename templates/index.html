@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Hulu Movies by genre Search</title>
+    <title>Hulu Movies  Search</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <h1>Hulu Movies by gener</h1>
+        <h1>Hulu Movies </h1>
         <form method="post" action="{{ url_for('search') }}">
             <div class="form-group">
-                <input type="text" name="query" class="form-control" placeholder="Search movies by genre">
+                <input type="text" name="query" class="form-control" placeholder="Search movies by title">
             </div>
             <button type="submit" class="btn btn-primary">Search</button>
         </form>
@@ -19,7 +19,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Id</th>
-                    <th>Title</th>
+                    <th>genre</th>
                     <th>IMDb Rating</th>
                 </tr>
             </thead>
@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ movie.title }}</td>
                         <td>{{ movie.id }}</td>
-                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.genre }}</td>
                         <td>{{ movie.score }}</td>
                     </tr>
                 {% endfor %}
