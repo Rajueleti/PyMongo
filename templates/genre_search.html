@@ -5,9 +5,9 @@
 </head>
 <body>
 	<h1>Genre Search</h1>
-	<form method="POST" action="/genre_search">
-		<label for="genre">Enter a genre:</label>
-		<input type="text" id="genre" name="genre">
+	<form method="POST" action="/genres_search">
+		<label for="genres">Enter a genre:</label>
+		<input type="text" id="genres" name="genre">
 		<button type="submit">Search</button>
 	</form>
 	<hr>
@@ -20,7 +20,7 @@
 			resultsList.innerHTML = "";
 			results.forEach(function(result) {
 				var li = document.createElement("li");
-				li.textContent = result.title;
+				li.textContent = result.genres.join(", ");
 				resultsList.appendChild(li);
 			});
 		}
@@ -30,7 +30,7 @@
 		form.addEventListener("submit", function(event) {
 			event.preventDefault();
 			var formData = new FormData(form);
-			fetch("/genre_search", {
+			fetch("/genres_search", {
 				method: "POST",
 				body: formData
 			})
