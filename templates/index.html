@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>Hulu Movies</h1>
+        <h1>Hulu Movies by gener</h1>
         <form method="post" action="{{ url_for('search') }}">
             <div class="form-group">
                 <input type="text" name="query" class="form-control" placeholder="Search movies by genre">
@@ -19,7 +19,7 @@
                 <tr>
                     <th>Title</th>
                     <th>Id</th>
-                    <th>Genre</th>
+                    <th>Title</th>
                     <th>IMDb Rating</th>
                 </tr>
             </thead>
@@ -28,7 +28,7 @@
                     <tr>
                         <td>{{ movie.title }}</td>
                         <td>{{ movie.id }}</td>
-                        <td>{{ movie.genres }}</td>
+                        <td>{{ movie.title }}</td>
                         <td>{{ movie.score }}</td>
                     </tr>
                 {% endfor %}
